@@ -6,10 +6,16 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Services from './pages/Services'
 import Contact from './pages/Contact'
+import MathsParkPage from './pages/MathsParkPage'
+import AdminApp from './admin/AdminApp'
 
-export type Page = 'home' | 'about' | 'services' | 'contact'
+export type Page = 'home' | 'about' | 'services' | 'contact' | 'maths-park-gallery'
 
-const PAGES: Page[] = ['home', 'about', 'services', 'contact']
+const PAGES: Page[] = ['home', 'about', 'services', 'contact', 'maths-park-gallery']
+
+function isAdminPath() {
+  return window.location.pathname.startsWith('/admin')
+}
 
 function pageFromPath(): Page {
   const seg = window.location.pathname.replace(/^\//, '') as Page
@@ -17,6 +23,7 @@ function pageFromPath(): Page {
 }
 
 export default function App() {
+  const [adminMode, setAdminMode] = useState(isAdminPath)
   const [page, setPage] = useState<Page>(pageFromPath)
 
   const navigate = (p: Page) => {
@@ -26,11 +33,15 @@ export default function App() {
   }
 
   useEffect(() => {
-    // Sync page state with browser back / forward buttons
-    const onPop = () => setPage(pageFromPath())
+    const onPop = () => {
+      setAdminMode(isAdminPath())
+      setPage(pageFromPath())
+    }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
+
+  if (adminMode) return <AdminApp />
 
   return (
     <>
@@ -46,9 +57,10 @@ export default function App() {
         >
           {page === 'home' && <Home navigate={navigate} />}
           {page === 'about' && <About />}
-          {page === 'services' && <Services />}
+          {page === 'services' && <Services navigate={navigate} />}
           {page === 'contact' && <Contact />}
-          <Footer navigate={navigate} />
+          {page === 'maths-park-gallery' && <MathsParkPage navigate={navigate} />}
+          {page !== 'maths-park-gallery' && <Footer navigate={navigate} />}
         </motion.div>
       </AnimatePresence>
     </>

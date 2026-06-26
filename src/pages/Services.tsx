@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import type { Page } from '../App'
 import Reveal from '../components/Reveal'
 import {
   ScienceIllustration,
@@ -8,6 +9,10 @@ import {
   TeacherIllustration,
   WorkshopIllustration,
 } from '../components/ServiceIllustrations'
+
+interface ServicesProps {
+  navigate?: (p: Page) => void
+}
 
 const spring = { type: 'spring' as const, stiffness: 280, damping: 22 }
 
@@ -74,7 +79,7 @@ const services = [
   },
 ]
 
-export default function Services() {
+export default function Services({ navigate }: ServicesProps) {
   return (
     <>
       {/* ── SERVICES HERO ── */}
@@ -97,7 +102,13 @@ export default function Services() {
       <div className="services-body">
         {services.map(svc => (
           <Reveal key={svc.title}>
-            <div className={`service-item${svc.reverse ? ' reverse' : ''}`}>
+            <motion.div
+              className={`service-item${svc.reverse ? ' reverse' : ''}`}
+              onClick={() => svc.title === 'Maths Parks' && navigate?.('maths-park-gallery')}
+              style={{ cursor: svc.title === 'Maths Parks' ? 'pointer' : 'default' }}
+              whileHover={svc.title === 'Maths Parks' ? { scale: 1.02 } : {}}
+              transition={{ duration: 0.3 }}
+            >
               <motion.div
                 className="service-visual"
                 style={{ background: svc.visualBg }}
@@ -118,10 +129,11 @@ export default function Services() {
                   {svc.features.map(f => <li key={f}>{f}</li>)}
                 </ul>
               </div>
-            </div>
+            </motion.div>
           </Reveal>
         ))}
       </div>
+
     </>
   )
 }
