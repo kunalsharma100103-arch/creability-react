@@ -24,6 +24,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Generate config.php from secrets
+        run: |
+          sed \
+            -e "s|%%DB_NAME%%|${{ secrets.DB_NAME }}|g" \
+            -e "s|%%DB_USER%%|${{ secrets.DB_USER }}|g" \
+            -e "s|%%DB_PASS%%|${{ secrets.DB_PASS }}|g" \
+            -e "s|%%JWT_SECRET%%|${{ secrets.JWT_SECRET }}|g" \
+            public/api/config.template.php > dist/api/config.php
+
       - name: Push built files to deploy branch
         uses: peaceiris/actions-gh-pages@v4
         with:
