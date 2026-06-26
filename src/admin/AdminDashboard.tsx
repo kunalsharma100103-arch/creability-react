@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { clearToken } from './auth'
+import ServicesManager from './ServicesManager'
+import FoundersManager from './FoundersManager'
+import SocialLinksManager from './SocialLinksManager'
 
 // ─── Types ────────────────────────────────────────────────
 export type AdminSection =
   | 'overview'
-  | 'verticals'
   | 'services'
+  | 'founders'
+  | 'social'
   | 'page-home'
   | 'page-about'
   | 'page-contact'
@@ -21,11 +25,18 @@ const Icon = {
       <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
     </svg>
   ),
-  verticals: (
+  founders: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
-      <polyline points="12 2 12 22"/><line x1="2" y1="8.5" x2="22" y2="8.5"/>
-      <line x1="2" y1="15.5" x2="22" y2="15.5"/>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  social: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
     </svg>
   ),
   services: (
@@ -78,12 +89,13 @@ const Icon = {
 }
 
 const NAV: NavItem[] = [
-  { key: 'overview',     label: 'Overview',         icon: Icon.overview   },
-  { key: 'verticals',    label: 'Verticals & Media', icon: Icon.verticals  },
-  { key: 'services',     label: 'Services',          icon: Icon.services   },
-  { key: 'page-home',    label: 'Home Page',         icon: Icon.home       },
-  { key: 'page-about',   label: 'About Page',        icon: Icon.about      },
-  { key: 'page-contact', label: 'Contact Page',      icon: Icon.contact    },
+  { key: 'overview',     label: 'Overview',      icon: Icon.overview  },
+  { key: 'services',     label: 'Services',      icon: Icon.services  },
+  { key: 'founders',     label: 'Founders/Team', icon: Icon.founders  },
+  { key: 'social',       label: 'Social Links',  icon: Icon.social    },
+  { key: 'page-home',    label: 'Home Page',     icon: Icon.home      },
+  { key: 'page-about',   label: 'About Page',    icon: Icon.about     },
+  { key: 'page-contact', label: 'Contact Page',  icon: Icon.contact   },
 ]
 
 // ─── Dashboard root ────────────────────────────────────────
@@ -185,8 +197,9 @@ export default function AdminDashboard({ onLogout }: Props) {
 
         <div className="ad-body">
           {section === 'overview'     && <OverviewSection onNavigate={setSection} />}
-          {section === 'verticals'    && <ComingSoon title="Verticals & Media Manager" desc="Create new verticals (Science Park, Art Studio, etc.) and manage each one's image/GIF gallery. Each new vertical you add here will automatically get its own page and URL on the live site." />}
-          {section === 'services'     && <ComingSoon title="Services Manager" desc="Add, edit, re-order, or remove services and their descriptions, icons, and feature bullet points." />}
+          {section === 'services'     && <ServicesManager />}
+          {section === 'founders'     && <FoundersManager />}
+          {section === 'social'       && <SocialLinksManager />}
           {section === 'page-home'    && <ComingSoon title="Home Page Editor" desc="Edit hero headline, swap the background media, and update the intro and stats sections." />}
           {section === 'page-about'   && <ComingSoon title="About Page Editor" desc="Edit company story, mission text, and update team photos or facility images." />}
           {section === 'page-contact' && <ComingSoon title="Contact Page Editor" desc="Update phone, email, address, and manage contact form settings." />}
@@ -208,10 +221,10 @@ function OverviewSection({ onNavigate }: { onNavigate: (s: AdminSection) => void
   ]
 
   const quickActions: { icon: React.ReactNode; label: string; desc: string; nav: AdminSection }[] = [
-    { icon: Icon.verticals, label: 'Add a Vertical',       desc: 'Science Park, Art Studio…',        nav: 'verticals'    },
-    { icon: Icon.services,  label: 'Edit Services',        desc: 'Update service offerings',          nav: 'services'     },
-    { icon: Icon.home,      label: 'Update Hero Text',     desc: 'Change homepage messaging',         nav: 'page-home'    },
-    { icon: Icon.about,     label: 'Edit About Page',      desc: 'Company story & team',             nav: 'page-about'   },
+    { icon: Icon.services,  label: 'Add a Service',        desc: 'Maths Park, Science Park…',        nav: 'services'     },
+    { icon: Icon.founders,  label: 'Edit Team',            desc: 'Add or update founders',           nav: 'founders'     },
+    { icon: Icon.social,    label: 'Social Links',         desc: 'Facebook, Instagram, etc.',        nav: 'social'       },
+    { icon: Icon.home,      label: 'Update Hero Text',     desc: 'Change homepage messaging',        nav: 'page-home'    },
   ]
 
   const archStatus = [
