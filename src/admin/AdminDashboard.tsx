@@ -258,12 +258,12 @@ function OverviewSection({ onNavigate }: { onNavigate: (s: AdminSection) => void
   ]
 
   const archStatus = [
-    { label: 'React SPA (Vite + TypeScript)', status: 'live',    note: 'Deployed on Hostinger'         },
-    { label: 'SPA Routing (.htaccess)',       status: 'live',    note: 'No more 404 on refresh'        },
-    { label: 'PHP/MySQL API',                 status: 'pending', note: 'Upload /api/ to Hostinger'     },
-    { label: 'JWT Authentication',            status: 'pending', note: 'Create DB + seed admin user'   },
-    { label: 'Media Upload API',              status: 'pending', note: 'Awaiting backend setup'        },
-    { label: 'Dynamic Vertical Routes',       status: 'pending', note: 'Phase 2 — post-backend'       },
+    { label: 'React SPA (Vite + TypeScript)', status: 'live', note: 'Deployed on Hostinger'          },
+    { label: 'SPA Routing (.htaccess)',        status: 'live', note: 'No 404 on refresh'              },
+    { label: 'PHP/MySQL API',                  status: 'live', note: 'Running on Hostinger'           },
+    { label: 'JWT Authentication',             status: 'live', note: 'Admin login active'             },
+    { label: 'Media Upload + Image Crop',      status: 'live', note: 'Upload from phone or PC'        },
+    { label: 'Services, Founders, Social',     status: 'live', note: 'Run /api/_migrate.php once'     },
   ]
 
   return (
