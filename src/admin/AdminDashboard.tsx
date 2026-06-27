@@ -100,18 +100,28 @@ const NAV: NavItem[] = [
 
 // ─── Dashboard root ────────────────────────────────────────
 export default function AdminDashboard({ onLogout }: Props) {
-  const [section,  setSection]  = useState<AdminSection>('overview')
-  const [expanded, setExpanded] = useState(true)
+  const [section,    setSection]    = useState<AdminSection>('overview')
+  const [expanded,   setExpanded]   = useState(true)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   function handleLogout() {
     clearToken()
     onLogout()
   }
 
+  function navigate(s: AdminSection) {
+    setSection(s)
+    setMobileOpen(false)
+  }
+
+  const showLabels = expanded || mobileOpen
   const currentNav = NAV.find(n => n.key === section)
 
   return (
-    <div className={`ad-root${expanded ? '' : ' ad-root--collapsed'}`}>
+    <div className={`ad-root${expanded ? '' : ' ad-root--collapsed'}${mobileOpen ? ' ad-root--mobile-open' : ''}`}>
+
+      {/* Mobile backdrop */}
+      <div className="ad-mobile-overlay" onClick={() => setMobileOpen(false)} />
 
       {/* ── Sidebar ────────────────────────────────────── */}
       <aside className="ad-sidebar">
@@ -119,7 +129,7 @@ export default function AdminDashboard({ onLogout }: Props) {
         <div className="ad-sidebar-head">
           <div className="ad-logo">
             <div className="ad-logo-mark">C</div>
-            {expanded && (
+            {showLabels && (
               <div className="ad-logo-text">
                 <span className="ad-logo-name">Creability</span>
                 <span className="ad-logo-sub">Admin</span>
@@ -133,6 +143,15 @@ export default function AdminDashboard({ onLogout }: Props) {
           >
             {expanded ? Icon.chevronLeft : Icon.chevronRight}
           </button>
+          <button
+            className="ad-sidebar-close"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
 
         <div className="ad-nav">
@@ -140,12 +159,12 @@ export default function AdminDashboard({ onLogout }: Props) {
             <button
               key={item.key}
               className={`ad-nav-btn${section === item.key ? ' ad-nav-btn--active' : ''}`}
-              onClick={() => setSection(item.key)}
-              title={!expanded ? item.label : undefined}
+              onClick={() => navigate(item.key)}
+              title={!showLabels ? item.label : undefined}
             >
               <span className="ad-nav-icon">{item.icon}</span>
-              {expanded && <span className="ad-nav-label">{item.label}</span>}
-              {expanded && section === item.key && <span className="ad-nav-pip" />}
+              {showLabels && <span className="ad-nav-label">{item.label}</span>}
+              {showLabels && section === item.key && <span className="ad-nav-pip" />}
             </button>
           ))}
         </div>
@@ -156,18 +175,18 @@ export default function AdminDashboard({ onLogout }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             className="ad-foot-btn"
-            title={!expanded ? 'View live site' : undefined}
+            title={!showLabels ? 'View live site' : undefined}
           >
             <span className="ad-nav-icon">{Icon.external}</span>
-            {expanded && <span>View Site</span>}
+            {showLabels && <span>View Site</span>}
           </a>
           <button
             className="ad-foot-btn ad-foot-btn--danger"
             onClick={handleLogout}
-            title={!expanded ? 'Log out' : undefined}
+            title={!showLabels ? 'Log out' : undefined}
           >
             <span className="ad-nav-icon">{Icon.logout}</span>
-            {expanded && <span>Log Out</span>}
+            {showLabels && <span>Log Out</span>}
           </button>
         </div>
 
@@ -177,9 +196,20 @@ export default function AdminDashboard({ onLogout }: Props) {
       <main className="ad-main">
 
         <header className="ad-topbar">
-          <div className="ad-topbar-left">
-            <h1 className="ad-topbar-title">{currentNav?.label}</h1>
-            <p className="ad-topbar-crumb">creabilitysolutions.com · Admin</p>
+          <div className="ad-topbar-left" style={{ display: 'flex', alignItems: 'center' }}>
+            <button
+              className="ad-hamburger"
+              onClick={() => setMobileOpen(o => !o)}
+              aria-label="Open menu"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+              </svg>
+            </button>
+            <div>
+              <h1 className="ad-topbar-title">{currentNav?.label}</h1>
+              <p className="ad-topbar-crumb">creabilitysolutions.com · Admin</p>
+            </div>
           </div>
           <div className="ad-topbar-right">
             <a

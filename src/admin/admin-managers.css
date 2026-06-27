@@ -138,8 +138,17 @@
 
 @media (max-width: 600px) {
   .sm-field-row { flex-direction: column; }
-  .sl-platform { width: 110px; }
+  .sl-platform { width: 44px; }
   .sl-platform-name { display: none; }
-  .sm-card-img { width: 72px; height: 72px; }
-  .sm-card-actions { flex-direction: row; padding: 12px; }
+  .sl-item { gap: 10px; padding: 12px; }
+  .sm-card { flex-wrap: wrap; }
+  .sm-card-img { width: 100%; height: 160px; }
+  .sm-card-body { padding: 12px; }
+  .sm-card-actions { flex-direction: row; padding: 0 12px 12px; width: 100%; justify-content: flex-end; }
+  .sm-form { max-width: 100%; }
+  .sm-btn { width: 100%; justify-content: center; }
+  .sm-form-actions { flex-direction: column; }
+  .iu-placeholder { padding: 20px; }
+  .sm-founder-photo { margin: 12px 0 12px 12px; }
+  .sm-founder-initials, .sm-founder-photo img { width: 60px; height: 60px; font-size: 22px; }
 }
