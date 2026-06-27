@@ -52,4 +52,6 @@ jobs:
           local-dir: ./dist/
           server-dir: /public_html/
           security: loose
-          timeout: 60000
+          timeout: 120000
+          exclude: |
+            **/uploads/**

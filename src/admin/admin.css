@@ -191,6 +191,13 @@
 }
 @keyframes al-spin { to { transform: rotate(360deg) } }
 
+.al-forgot {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; color: rgba(255,255,255,.38);
+  padding: 0; transition: color .18s;
+}
+.al-forgot:hover { color: var(--ad-blue) }
+
 .al-lockline {
   display: flex; align-items: center; justify-content: center; gap: 6px;
   margin-top: 24px;
