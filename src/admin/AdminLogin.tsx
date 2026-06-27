@@ -70,7 +70,7 @@ export default function AdminLogin({ onLogin }: Props) {
     if (!resetKey.trim()) { setError('Enter your reset key'); return }
     setLoading(true)
     try {
-      const res  = await fetch('/api/auth/reset.php', {
+      const res  = await fetch('/api/auth/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reset_key: resetKey, new_password: 'checking_key' }),
@@ -92,7 +92,7 @@ export default function AdminLogin({ onLogin }: Props) {
     if (newPw !== confirmPw)    { setError('Passwords do not match'); return }
     setLoading(true)
     try {
-      const res  = await fetch('/api/auth/reset.php', {
+      const res  = await fetch('/api/auth/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reset_key: resetKey, new_password: newPw }),
